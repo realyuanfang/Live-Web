@@ -38,8 +38,8 @@ io.sockets.on('connection',
 			console.log("Received: 'chatmessage' " + data);
 			
 			// Send it to all of the clients
-			// socket.broadcast.emit('chatmessage', data);
-			io.emit('chatmessage', data);
+			 socket.broadcast.emit('chatmessage', data);
+			//io.emit('chatmessage', data);
 		});
 		socket.on('disconnect', function() {
 			console.log("Client has disconnected " + socket.id);
