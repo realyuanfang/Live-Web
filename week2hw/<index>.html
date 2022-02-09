@@ -1,0 +1,134 @@
+<html>
+	<head>
+
+		<style>
+	 input[type=submit]:hover {
+				background-color: #6bbe70;
+			  }
+
+			  input[type=text]:hover {
+				background-color: #fff9ac;
+			  }
+
+	input[type=text] {
+	width: 100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		box-sizing: border-box;
+			  }
+
+			  input[type=submit] {
+				background-color: #525252;
+				font-family: 'Courier New', Courier, monospace;
+				font-size: 20px;
+				color: white;
+				width: 100%;
+				padding: 12px 20px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				float: left;
+			  }
+
+
+			  #messages {
+  color: rgb(255, 255, 255);
+  font-size: 100px;
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+}
+.flex {
+	display: flex;
+	width:500px;
+	height:600px;
+}
+			</style>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+
+	</head>
+ <body>
+    
+
+	 <div style = "
+	 background-color: red; /* For browsers that do not support gradients */
+	 background-image: linear-gradient(rgb(240, 180, 255), rgb(191, 255, 205), rgb(159, 160, 255));"
+			
+	</div>
+    
+	<h1 style="color:rgb(255, 255, 255); font-family: 'Courier New', Courier, monospace; font-size: 180px;" >Lets's Write a Story Together:Once upon a time</h1>
+    <button>Generate Random Picture</button>
+</header>
+<section class="flex">
+    <img src="">
+</section>
+    <div id = "imageArray">
+
+   
+</div>
+ <div id = "imlocation"></div>
+    <div id="messages">
+ Use a sentence to describe the image  
+</div>
+<input type="text" id="message" name="message">
+<input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+
+<script>	
+	const imageArray = [
+		"1.jpg",
+		"https://images.unsplash.com/photo-1634334339429-660e1b088026?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2148&q=80",
+		"https://images.unsplash.com/photo-1643255083197-18721220670e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3432&q=80",
+		"https://images.unsplash.com/photo-1568809726076-dbc9f04a2382?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2832&q=80",
+		"https://images.unsplash.com/photo-1643726937413-b42c69114c28?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3432&q=80"
+	]; 
+	
+	
+	 const image = document.querySelector("img");
+	const button = document.querySelector("button");
+	
+	window.onload = () => generateRandomPicture(imageArray);
+	
+	button.addEventListener("click", () => generateRandomPicture(imageArray));
+	
+	function generateRandomPicture(array){
+		let randomNum = Math.floor(Math.random() * array.length); 
+		image.setAttribute("src", array[randomNum]);
+	}
+	 //var rand = 60/image.length
+	//  function randomimage() {
+	//  	// currentdate = new Date()
+	//  	// image_number = currentdate.getSeconds()
+	//  	// image_number = Math.floor(image_number/rand)
+	
+	//      var ranNum = Math.floor(Math.random() * image.length);
+	//  	return(image[ranNum])
+	//  }
+	//  document.write("<img src='" + imlocation + randomimage()+ "'>");
+	
+	
+	
+				var socket = io.connect();
+				
+				socket.on('connect', function() {
+					console.log("Connected");
+				});
+	
+				// Receive from any event
+				socket.on('chatmessage', function (data) {
+					console.log(data);
+					document.getElementById('messages').innerHTML = "" + data + 
+	 + "" + document.getElementById('messages').innerHTML;
+				});
+				
+				var sendmessage = function(message) {
+					console.log("chatmessage: " + message);
+					socket.emit('chatmessage', message);
+				};
+	
+				document.addEventListener('mousemove', function() {
+					document.getElementById("theimage").src = "imlocation" + randomimage();
+				})
+			</script>	
+ </body>
+ 
+</html>
